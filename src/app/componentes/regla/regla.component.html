@@ -1,0 +1,22 @@
+<tr [formGroup]="formulario">
+    <div formGroupName="Regla1">
+        <td scope="row">1</td>
+        <td>
+            <div class="form-group">
+                <select class="form-control" formControlName="name">
+                    <option>-- Regla --</option>
+                    <option *ngFor="let rule of rules; let i = index" value="{{i}}" >{{rule.name}}</option>
+                </select>
+            </div>
+        </td>
+        <td class="pb-3" formGroupName="args">
+            <input type="text" class="form-control" formControlName="min">
+            <input type="text" class="form-control" formControlName="max">
+        </td>
+        <td>
+            <div class="d-flex justify-content-center">
+                <i class="btn btn-sm btn-danger far fa-trash-alt" data-toggle="tooltip" title="Borrar esta regla."></i>
+            </div>
+        </td>
+    </div>
+</tr>
