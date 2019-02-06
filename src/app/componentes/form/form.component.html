@@ -60,6 +60,7 @@
                                             <td>
                                                 <div class="form-group">
                                                     <select class="form-control my-2" formControlName="name" (change)="selectedRuleList( field.key, i )">
+                                                        <option value="" disabled>-- Regla --</option>
                                                         <option *ngFor="let rule of rules; let i = index" value="{{i}}" [disabled]="filter(field.key, i)">{{rule.name}}</option>
                                                     </select>
                                                 </div>

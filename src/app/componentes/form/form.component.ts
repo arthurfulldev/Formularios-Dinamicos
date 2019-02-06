@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { GetListRulesService } from "../../services/get-list-rules.service";
 import * as $ from 'jquery/dist/jquery.min.js';
-import { NumberSymbol } from '@angular/common';
 
 @Component({
 	selector: 'form',
@@ -49,7 +48,7 @@ export class FormComponent implements OnInit {
 			return;
 		}
 		(<FormGroup>this.dinamicForm.get(item)).addControl( 'reglas',  this.fb.array([]));
-		(<FormArray>this.dinamicForm.get(item+".reglas")).push( this.fb.group({ name: 0 }));
+		(<FormArray>this.dinamicForm.get(item+".reglas")).push( this.fb.group({ name: '' }));
 	}
 
 	removeRule( field: string, rule: number ): void
@@ -69,7 +68,7 @@ export class FormComponent implements OnInit {
 
 	addArguments( field: string, rule: number, value: number ): void {
 		let base = field+".reglas." + rule;
-		let theRule = (value != 0) ? this.rules[value-1]: 0;
+		let theRule = this.rules[value];
 		(<FormGroup>this.dinamicForm.get(base)).removeControl( "arguments" );
 		if ( theRule['arguments'] ){
 			(<FormGroup>this.dinamicForm.get(base)).addControl( "arguments", this.fb.group({}) );
