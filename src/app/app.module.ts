@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component';
 import { FieldsComponent } from './componentes/fields/fields.component';
-import { ReglaComponent } from './componentes/regla/regla.component';
 import { KeyobjPipe } from './pipes/keyobj.pipe';
 import { RuleNamePipe } from './pipes/rule-name.pipe';
 import { FormComponent } from './componentes/form/form.component';
@@ -13,7 +12,6 @@ import { FormComponent } from './componentes/form/form.component';
 	declarations: [
 		AppComponent,
 		FieldsComponent,
-		ReglaComponent,
 
 		KeyobjPipe,
 
