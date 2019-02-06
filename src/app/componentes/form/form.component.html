@@ -20,21 +20,23 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let field of dinamicForm.value | keyobj; trackBy:trackByFn" formGroupName="{{field.key}}">
+                <tbody *ngFor="let field of dinamicForm.value | keyobj; let i = indexx; trackBy:trackByFn" formGroupName="{{field.key}}">
                     <tr>
                         <th scope="row">{{field.key | ruleName:6}}</th>
-                        <td><input class="form-control" type="text" name="name" formControlName="name" placeholder="Nombre del campo" data-toggle="tooltip" title="Escribe el nombre del campo"></td>
+                        <td>
+                            <input class="form-control" type="text" name="name" formControlName="name" placeholder="Nombre del campo" data-toggle="tooltip" title="Escribe el nombre del campo">
+                        </td>
                         <td>
                             <input type="checkbox" formControlName="isRequired">
                         </td>
                         <td (click)="mostrar('#'+field.key)">
                             <div class="d-flex justify-content-center">
-                                <i class="{{ !hide ? 'far fa-eye' : 'far fa-eye-slash' }}" (click)="hide = !hide" data-toggle="tooltip" title="{{ hide ? 'Ver reglas de este campo.': 'Ocultar reglas de este campo.' }}"></i>
+                                <i class="far fa-eye"></i>
                             </div>
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <i class="btn btn-sm btn-danger far fa-trash-alt" (click)='removeField(field.key)' data-toggle="tooltip" title="Borrar este campo."></i>
+                                <i class="btn btn-sm btn-danger far fa-trash-alt" (click)='removeField(field.key, i)' data-toggle="tooltip" title="Borrar este campo."></i>
                             </div>
                         </td>
                     </tr>
@@ -58,8 +60,7 @@
                                             <td>
                                                 <div class="form-group">
                                                     <select class="form-control my-2" formControlName="name" (change)="selectedRuleList( field.key, i )">
-                                                        <option value="0">-- Regla --</option>
-                                                        <option *ngFor="let rule of rules; let i = index" value="{{i+1}}">{{rule.name}}</option>
+                                                        <option *ngFor="let rule of rules; let i = index" value="{{i}}" [disabled]="filter(field.key, i)">{{rule.name}}</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -86,4 +87,4 @@
     </div>
 </div>
 
-<br>{{ dinamicForm.value | json}}
+<!-- <br>{{ dinamicForm.value | json}} -->

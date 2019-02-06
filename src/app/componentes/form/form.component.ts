@@ -15,7 +15,7 @@ export class FormComponent implements OnInit {
 	private ruleCount=2;
 	private rules: Array<any>;
 	public dinamicForm: FormGroup;
-	public validateFieldRule = [];
+	public validateFieldRule = {};
 	constructor(private fb: FormBuilder, private listRules: GetListRulesService) {
 		this.rules = listRules.getList();
 	}
@@ -28,16 +28,20 @@ export class FormComponent implements OnInit {
 		if( !this.validaFormulario() ){
 			return;
 		}
-		this.dinamicForm.addControl( 'field_' + this.fieldCount, this.fb.group({
+		let field: string =  'field_' + this.fieldCount;
+		this.dinamicForm.addControl( field , this.fb.group({
 			'name': [ null, Validators.required ],
 			'isRequired': true
 		}));
+		this.validateFieldRule[field] = { hide: false,  rules: {} };
 		this.fieldCount++;
+		// console.log(this.validateFieldRule);
 	}
 
-	removeField( item ): void
+	removeField( item, index ): void
 	{
 		this.dinamicForm.removeControl(item);
+		delete this.validateFieldRule[item];
 	}
 
 	addRule( item ): void {
@@ -51,12 +55,16 @@ export class FormComponent implements OnInit {
 	removeRule( field: string, rule: number ): void
 	{
 		(<FormArray>this.dinamicForm.get( field + '.reglas')).removeAt(rule);
+		delete this.validateFieldRule[field]['rules']['rule_'+ rule];
+		// console.log(this.validateFieldRule[field]['rules']);
 	}
 	
 	selectedRuleList( field: string, rule: number ): void 
 	{
 		let regla = this.dinamicForm.get( field + '.reglas.' + rule + '.name').value;
-		this.addArguments( field, rule, regla )
+		this.addArguments( field, rule, regla );
+		this.validateFieldRule[field]['rules']['rule_'+rule] = regla;
+		// console.log(this.validateFieldRule[field]['rules'])
 	}
 
 	addArguments( field: string, rule: number, value: number ): void {
@@ -71,7 +79,7 @@ export class FormComponent implements OnInit {
 		}
 	}
 
-	trackByFn(index: any, item: any) {
+	trackByFn ( index: any, item: any) {
 		return index;
 	}
 
@@ -90,6 +98,9 @@ export class FormComponent implements OnInit {
 		}
 		console.log( this.dinamicForm.value );
 	}
-}
 
-//dist/fields
+	filter( field, option )
+	{	
+		return Object.values(this.validateFieldRule[field]['rules']).indexOf( (option) + "" ) > -1;
+	}
+}
